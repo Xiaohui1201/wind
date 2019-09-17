@@ -1,0 +1,60 @@
+server:
+  port: 9999
+
+spring:
+  application:
+    name: wind-gateway
+  cloud:
+    gateway:
+      enabled: true
+      routes:
+      - id: dalaoyang
+        uri: http://www.dalaoyang.cn/
+        predicates:
+        - Path=/dalao/**
+      # 认证中心
+      - id: wind-auth
+        uri: lb://wind-auth
+        predicates:
+        - Path=/auth/**
+#        filters:
+#        # 验证码处理
+#        - ValidateCodeGatewayFilter
+#        # 前端密码解密
+#        - PasswordDecoderFilter
+      #UPMS 模块
+      - id: wind-upms
+        uri: http://localhost:4000
+        predicates:
+        - Path=/admin/**
+#        # 限流配置
+#        - name: RequestRateLimiter
+#          args:
+#            key-resolver: '#{@remoteAddrKeyResolver}'
+#            redis-rate-limiter.replenishRate: 10
+#            redis-rate-limiter.burstCapacity: 20
+          # 降级配置
+#        - name: Hystrix
+#          args:
+#            name: default
+#            fallbackUri: 'forward:/fallback'
+
+# 注册中心
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: 127.0.0.1:9999
+  client:
+    service-url:
+      defaultZone: http://wind:wind@127.0.0.1:8761/eureka/
+
+
+
+info:
+  app:
+    name: wind-gateway
+  create:
+    name: fanghh
+  build:
+    artifactId: @project.artifactId@
+    version: @project.version@

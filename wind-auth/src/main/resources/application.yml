@@ -1,0 +1,25 @@
+server:
+  port: 3000
+
+spring:
+  application:
+    name: wind-auth
+
+# 注册中心
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: 127.0.0.1:3000
+  client:
+    service-url:
+      defaultZone: http://wind:wind@127.0.0.1:8761/eureka/
+
+
+info:
+  app:
+    name: wind-auth
+  create:
+    name: fanghh
+  build:
+    artifactId: @project.artifactId@
+    version: @project.version@
